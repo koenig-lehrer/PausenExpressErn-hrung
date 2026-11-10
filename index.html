@@ -1,0 +1,834 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Pausenexpress · Ernährung tanken</title>
+<style>
+:root{font-family:Arial,Helvetica,sans-serif;color:#f4f5ef;background:#172d31;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button{font:inherit;cursor:pointer;border:0;touch-action:manipulation}button:focus-visible{outline:4px solid #ffad65;outline-offset:4px}button:disabled{cursor:default}#app{height:100vh;height:100dvh;display:grid;grid-template-rows:76px 1fr 84px;max-width:1440px;margin:auto;padding:0 24px;gap:12px}header{display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-size:23px;font-weight:900;letter-spacing:-1px}.brand small{display:block;font-size:11px;letter-spacing:2px;color:#a9c0bc;margin-top:5px}.tag{font-size:12px;border:1px solid #587071;padding:8px 12px;border-radius:30px;color:#c6dad0}.hud{display:flex;gap:22px;align-items:center}.stat span{display:block;color:#a9c0bc;font-size:11px;text-transform:uppercase;letter-spacing:1px}.stat strong{font-size:23px}.pause{background:#304a4c;color:white;border-radius:12px;min-height:48px;padding:12px 18px;font-weight:bold}.stage{min-height:0;position:relative;background:#a9c3a3;border-radius:22px;overflow:hidden;border:2px solid #59736b}canvas{display:block;width:100%;height:100%}.fuel{position:absolute;top:18px;left:18px;width:180px;background:#182d30ee;padding:12px 14px;border-radius:14px}.fuel label{font-size:12px;display:flex;justify-content:space-between;font-weight:bold}.track{height:10px;background:#546566;border-radius:9px;margin-top:9px;overflow:hidden}#bar{height:100%;background:#cfef75;width:0;transition:width .15s}#low{font-size:11px;color:#ffd18d;margin-top:6px;min-height:13px}.controls{display:flex;gap:14px;align-items:center;padding-bottom:12px}.steer{height:60px;flex:1;background:#cfef75;border-radius:15px;color:#21332d;font-weight:900;font-size:22px;touch-action:none;user-select:none;-webkit-user-select:none}.steer:active{background:#efffb7;transform:translateY(2px)}.hint{font-size:12px;color:#b5c9c4;text-align:center;width:200px}.overlay{position:absolute;inset:0;background:#102729b8;backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}.overlay[hidden]{display:none}.card{background:#f7f6ed;color:#203b3b;border-radius:24px;width:min(760px,100%);padding:28px 34px;box-shadow:0 16px 50px #12282655}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#4d7067;font-weight:bold}.card h1{font-size:clamp(32px,4vw,54px);line-height:1.03;letter-spacing:-2px;margin:13px 0}.card h2{font-size:32px;margin:10px 0}.card p{line-height:1.5;margin:10px 0;color:#4a615b}.accent{color:#628421}.primary{display:block;width:100%;padding:17px;background:#cfef75;color:#20392d;border-radius:12px;font-size:19px;font-weight:bold;margin-top:18px;min-height:54px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0}.step{background:#e8ecdf;border-radius:12px;padding:13px;font-size:14px;line-height:1.5}.step b{display:block;font-size:23px;margin-bottom:5px}.quizhead{display:flex;justify-content:space-between;align-items:center}.pill{background:#e2eaca;border-radius:30px;padding:8px 12px;font-size:14px;font-weight:bold}.word{font-size:42px;font-weight:900;text-align:center;margin:15px 0 20px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.answer{min-height:62px;padding:12px;background:white;border:2px solid #c8d3c7;border-radius:12px;font-size:22px;font-weight:bold;color:#25453e}.answer:disabled{opacity:1}.answer.correct{background:#d6efac;border-color:#729f40}.answer.wrong{background:#f8d7cd;border-color:#c16a51}.feedback{font-size:16px;min-height:48px;margin-top:14px;line-height:1.5}.results{display:flex;gap:12px;margin-top:20px}.results>div{flex:1;background:#e8ecdf;padding:15px;border-radius:12px}.results strong{display:block;font-size:28px}.results span{font-size:12px}#toast{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:#d6efac;color:#243c2c;border-radius:20px;padding:10px 20px;font-weight:bold;pointer-events:none}#toast:empty{display:none}@media(max-width:650px){#app{padding:0 10px;grid-template-rows:70px 1fr 76px;gap:8px}.tag,.hint{display:none}.brand{font-size:18px}.hud{gap:10px}.stat strong{font-size:17px}.stat span{font-size:9px}.pause{padding:10px;font-size:12px}.card{padding:22px 18px}.steps{gap:6px}.step{padding:10px;font-size:12px}.fuel{width:145px;left:10px;top:10px}.card h1{font-size:35px}.word{font-size:36px}.results{gap:6px}.results>div{padding:10px}.results strong{font-size:23px}}@media(max-height:620px){#app{grid-template-rows:56px 1fr 66px;gap:6px}.card{padding:16px 26px}.card h1{font-size:34px;margin:7px 0}.steps{margin:10px 0}.step b{font-size:18px;margin:0}.card p{margin:6px 0}.word{font-size:32px;margin:8px 0}.answer{min-height:49px;font-size:20px}.feedback{min-height:25px;margin-top:8px}.primary{margin-top:10px;padding:12px;min-height:46px}.steer{height:52px}.overlay{padding:10px}}
+.word{font-size:clamp(23px,2.6vw,31px);line-height:1.22}.answer{font-size:19px;line-height:1.25}.card{max-height:100%;overflow-y:auto}.quizhead{gap:10px}.pill{flex-shrink:0}@media(max-height:620px){.word{font-size:23px}.answer{font-size:17px}.feedback{font-size:15px}}
+</style></head><body><main id="app">
+<header><div class="brand">PAUSENEXPRESS<small>MIT WISSEN WEITER.</small></div><span class="tag">ERNÄHRUNG · 6 THEMEN</span><div class="hud"><div class="stat"><span>Strecke</span><strong id="distance">0 m</strong></div><div class="stat"><span>Tankstelle in</span><strong id="nextStop">1800 m</strong></div><button id="pause" class="pause" disabled>Ⅱ Pause</button></div></header>
+<section class="stage" aria-label="Straße mit drei Fahrspuren"><canvas id="road" aria-label="Weiche den Unterrichtsschildern aus."></canvas><div class="fuel"><label>BENZIN <span id="fuelText">0 / 100</span></label><div class="track"><div id="bar"></div></div><div id="low"></div></div><div id="toast" aria-live="polite"></div><div class="overlay" id="overlay"><div class="card" id="card"></div></div></section>
+<nav class="controls" aria-label="Bus steuern"><button id="left" class="steer" aria-label="Eine Spur nach links">← LINKS</button><div class="hint">Ein Tipp = eine Spur<br>Am Computer: Pfeiltasten</div><button id="right" class="steer" aria-label="Eine Spur nach rechts">RECHTS →</button></nav></main>
+<script>
+'use strict';
+// ===== ZENTRALE EINSTELLUNGEN =====
+const CONFIG={questionsPerRound:5,fuelReward:20,tankCapacity:100,canisterFuel:10,stationDistance:1800,fuelPerMeter:60/1800,startSpeed:95,maxSpeed:130,speedGainPerMeter:.003,laneChangeSeconds:.16,rowDistance:110,lookAhead:210,canisterChance:.10,lowFuel:20};
+// ===== AUSTAUSCHBARE LERNINHALTE =====
+// Eigene id/level verwenden: Dadurch bleiben die Rekorde verschiedener Sätze getrennt.
+const QUESTION_SET={id:'ernaehrung-sechs-themen-v1',level:'basis',title:'Ernährung'};
+const QUESTIONS=[
+  {
+    "id": "0-0",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Wie viel unseres Körpers besteht aus Wasser?",
+    "correct": "Mehr als die Hälfte",
+    "choices": [
+      "Etwa ein Zehntel",
+      "Fast gar nichts",
+      "Genau ein Viertel"
+    ],
+    "explanation": "Unser Körper besteht zu mehr als der Hälfte aus Wasser."
+  },
+  {
+    "id": "0-1",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Wobei hilft Wasser im Körper?",
+    "correct": "Nährstoffe transportieren",
+    "choices": [
+      "Knochen durch Zucker ersetzen",
+      "Eiweiß in Luft verwandeln",
+      "Vitamine herstellen"
+    ],
+    "explanation": "Wasser hilft, Nährstoffe durch den Körper zu transportieren."
+  },
+  {
+    "id": "0-2",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Wie kühlt Schweiß unseren Körper?",
+    "correct": "Er verdunstet auf der Haut",
+    "choices": [
+      "Er bleibt in den Muskeln",
+      "Er wird zu Körperfett",
+      "Er erhöht die Körperwärme"
+    ],
+    "explanation": "Wenn Schweiß auf der Haut verdunstet, kühlt der Körper ab."
+  },
+  {
+    "id": "0-3",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Was scheiden wir mit dem Urin aus?",
+    "correct": "Wasser und Abfallstoffe",
+    "choices": [
+      "Nur Körperfett",
+      "Nur Ballaststoffe",
+      "Nur Luft"
+    ],
+    "explanation": "Mit dem Urin verlassen Wasser und Abfallstoffe den Körper."
+  },
+  {
+    "id": "0-4",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Warum müssen wir täglich trinken?",
+    "correct": "Wir verlieren täglich Wasser",
+    "choices": [
+      "Wasser bleibt nur im Mund",
+      "Wir brauchen Wasser nur nachts",
+      "Trinken ersetzt jede Mahlzeit"
+    ],
+    "explanation": "Wir verlieren jeden Tag Wasser und brauchen deshalb Nachschub."
+  },
+  {
+    "id": "0-5",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Wann brauchen wir mehr Wasser?",
+    "correct": "Bei Hitze und Sport",
+    "choices": [
+      "Nur beim Fernsehen",
+      "Nur bei kaltem Wetter",
+      "Wenn wir weniger schwitzen"
+    ],
+    "explanation": "Bei Hitze und Sport verlieren wir mehr Wasser, zum Beispiel durch Schweiß."
+  },
+  {
+    "id": "0-6",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Was kann bei zu wenig Trinken passieren?",
+    "correct": "Kopfschmerzen und Schwindel",
+    "choices": [
+      "Bessere Konzentration",
+      "Stärkere Muskeln",
+      "Bessere Nachtsicht"
+    ],
+    "explanation": "Zu wenig Wasser kann Kopfschmerzen, Schwindel und Konzentrationsprobleme auslösen."
+  },
+  {
+    "id": "0-7",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Welches Getränk ist der beste Durstlöscher?",
+    "correct": "Wasser",
+    "choices": [
+      "Gezuckerte Cola",
+      "Energydrink",
+      "Limonade"
+    ],
+    "explanation": "Wasser löscht den Durst ohne Zucker und Koffein."
+  },
+  {
+    "id": "0-8",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Was stimmt über normale gezuckerte Cola?",
+    "correct": "Sie liefert Flüssigkeit und Zucker",
+    "choices": [
+      "Sie enthält kein Wasser",
+      "Sie ersetzt Obst und Gemüse",
+      "Sie enthält viele Ballaststoffe"
+    ],
+    "explanation": "Cola liefert Flüssigkeit, enthält aber zusätzlich viel Zucker und auch Koffein."
+  },
+  {
+    "id": "0-9",
+    "g": 0,
+    "topic": "Wasser",
+    "question": "Was kann zu viel Koffein auslösen?",
+    "correct": "Unruhe und Schlafprobleme",
+    "choices": [
+      "Stärkere Knochen",
+      "Mehr Ballaststoffe im Körper",
+      "Eine bessere Verdauung durch Fasern"
+    ],
+    "explanation": "Zu viel Koffein kann unruhig machen, den Schlaf stören oder Herzrasen auslösen."
+  },
+  {
+    "id": "1-0",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Wie viele Portionen Obst und Gemüse zusammen sind unser Tagesziel?",
+    "correct": "Mindestens fünf Portionen",
+    "choices": [
+      "Eine Portion pro Woche",
+      "Fünf Portionen von jeder Sorte",
+      "Nur eine Portion am Tag"
+    ],
+    "explanation": "Das Ziel sind mindestens fünf Portionen Obst und Gemüse zusammen, über den Tag verteilt."
+  },
+  {
+    "id": "1-1",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Was hilft beim Abschätzen einer Portion?",
+    "correct": "Die eigene Hand",
+    "choices": [
+      "Die Schuhgröße",
+      "Die Körpergröße in Metern",
+      "Die Länge des Tisches"
+    ],
+    "explanation": "Die eigene Hand hilft, eine Portion abzuschätzen."
+  },
+  {
+    "id": "1-2",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Wobei helfen Ballaststoffe?",
+    "correct": "Bei der Verdauung",
+    "choices": [
+      "Beim Hören von Geräuschen",
+      "Beim Bilden von Koffein",
+      "Beim Kühlen durch Schweiß"
+    ],
+    "explanation": "Ballaststoffe unterstützen unsere Verdauung."
+  },
+  {
+    "id": "1-3",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Was kann bei dauerhaft zu wenig Ballaststoffen passieren?",
+    "correct": "Verstopfung",
+    "choices": [
+      "Mehr Durst durch Koffein",
+      "Sofortiges Muskelwachstum",
+      "Eine bessere Verdauung"
+    ],
+    "explanation": "Wer längere Zeit zu wenig Ballaststoffe isst, kann Verstopfung bekommen."
+  },
+  {
+    "id": "1-4",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Wobei hilft Vitamin C?",
+    "correct": "Bei der Körperabwehr",
+    "choices": [
+      "Beim Bilden von Zahnlöchern",
+      "Beim Herstellen von Zuckerzusatz",
+      "Beim Speichern von Koffein"
+    ],
+    "explanation": "Vitamin C unterstützt die Körperabwehr gegen Krankheitserreger."
+  },
+  {
+    "id": "1-5",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Was ist Kalium?",
+    "correct": "Ein Mineralstoff",
+    "choices": [
+      "Eine Zuckerart",
+      "Ein Eiweißriegel",
+      "Ein Ballaststoff"
+    ],
+    "explanation": "Kalium ist ein Mineralstoff. Muskeln und Nerven brauchen ihn."
+  },
+  {
+    "id": "1-6",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Wer braucht Kalium zum guten Arbeiten?",
+    "correct": "Muskeln und Nerven",
+    "choices": [
+      "Nur die Haare",
+      "Nur der Mageninhalt",
+      "Nur die Fingernägel"
+    ],
+    "explanation": "Kalium unterstützt die Arbeit von Muskeln und Nerven."
+  },
+  {
+    "id": "1-7",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Warum verschiedene Obst- und Gemüsesorten essen?",
+    "correct": "Sie liefern verschiedene Nährstoffe",
+    "choices": [
+      "Alle enthalten nur Zucker",
+      "Eine Sorte ersetzt jedes Essen",
+      "Nur die Farbe ist wichtig"
+    ],
+    "explanation": "Verschiedene Sorten liefern unterschiedliche Nährstoffe. Abwechslung ist sinnvoll."
+  },
+  {
+    "id": "1-8",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Warum macht ein Apfel meist besser satt als Apfelsaft?",
+    "correct": "Er enthält mehr Ballaststoffe",
+    "choices": [
+      "Er enthält mehr Koffein",
+      "Er besteht nur aus Eiweiß",
+      "Er enthält gar keinen Zucker"
+    ],
+    "explanation": "Ein ganzer Apfel enthält meist mehr Ballaststoffe und macht besser satt als Saft."
+  },
+  {
+    "id": "1-9",
+    "g": 1,
+    "topic": "Obst und Gemüse",
+    "question": "Du isst an einem Tag wenig Gemüse. Was stimmt?",
+    "correct": "Wichtig sind die Gewohnheiten auf Dauer",
+    "choices": [
+      "Du wirst deshalb sofort krank",
+      "Du brauchst nie wieder Gemüse",
+      "Eine Mahlzeit entscheidet alles"
+    ],
+    "explanation": "Ein einzelner Tag macht uns nicht krank. Entscheidend ist die Versorgung über längere Zeit."
+  },
+  {
+    "id": "2-0",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Was liefern Kohlenhydrate dem Körper?",
+    "correct": "Energie",
+    "choices": [
+      "Koffein",
+      "Abfallstoffe",
+      "Nur Wasser"
+    ],
+    "explanation": "Kohlenhydrate liefern Energie für Gehirn und Muskeln."
+  },
+  {
+    "id": "2-1",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Welches Lebensmittel enthält viele Kohlenhydrate?",
+    "correct": "Nudeln",
+    "choices": [
+      "Olivenöl",
+      "Butter",
+      "Wasser"
+    ],
+    "explanation": "Brot, Nudeln, Reis, Haferflocken und Kartoffeln enthalten viele Kohlenhydrate."
+  },
+  {
+    "id": "2-2",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Welche beiden Stoffe gehören zu den Kohlenhydraten?",
+    "correct": "Zucker und Stärke",
+    "choices": [
+      "Wasser und Kalium",
+      "Eiweiß und Fett",
+      "Vitamin C und Koffein"
+    ],
+    "explanation": "Zucker und Stärke gehören beide zu den Kohlenhydraten."
+  },
+  {
+    "id": "2-3",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Woraus besteht Stärke?",
+    "correct": "Aus verbundenen Zuckerbausteinen",
+    "choices": [
+      "Aus Wassertröpfchen",
+      "Aus Aminosäuren",
+      "Aus Fettsäuren"
+    ],
+    "explanation": "Stärke besteht aus vielen miteinander verbundenen Zuckerbausteinen."
+  },
+  {
+    "id": "2-4",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Was macht der Körper bei der Verdauung mit Stärke?",
+    "correct": "Er zerlegt sie in Zuckerbausteine",
+    "choices": [
+      "Er macht daraus Koffein",
+      "Er scheidet sie immer ganz aus",
+      "Er verwandelt sie direkt in Kalium"
+    ],
+    "explanation": "Bei der Verdauung wird Stärke in einzelne Zuckerbausteine zerlegt."
+  },
+  {
+    "id": "2-5",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Warum liefert eine Kartoffel Energie, obwohl sie nicht süß schmeckt?",
+    "correct": "Sie enthält Stärke",
+    "choices": [
+      "Sie enthält viel Koffein",
+      "Nur süßes Essen liefert Energie",
+      "Sie besteht hauptsächlich aus Öl"
+    ],
+    "explanation": "Kartoffeln enthalten Stärke. Der Körper zerlegt sie in Zuckerbausteine."
+  },
+  {
+    "id": "2-6",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Müssen wir Süßigkeiten essen, um Energie zu bekommen?",
+    "correct": "Nein, auch Stärke liefert Energie",
+    "choices": [
+      "Ja, nur Süßigkeiten liefern Energie",
+      "Ja, vor jeder Bewegung",
+      "Ja, weil Brot keine Energie liefert"
+    ],
+    "explanation": "Auch aus Stärke in Brot, Nudeln und Kartoffeln gewinnt der Körper Zuckerbausteine."
+  },
+  {
+    "id": "2-7",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Was enthält Vollkornbrot meist mehr als Weißbrot?",
+    "correct": "Ballaststoffe",
+    "choices": [
+      "Koffein",
+      "Zugesetzten Zucker",
+      "Wasser als einzigen Nährstoff"
+    ],
+    "explanation": "Vollkornprodukte enthalten mehr Ballaststoffe als Produkte aus Weißmehl."
+  },
+  {
+    "id": "2-8",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Warum wählen wir häufig Vollkornprodukte?",
+    "correct": "Sie helfen, länger satt zu bleiben",
+    "choices": [
+      "Sie ersetzen das Trinken",
+      "Sie enthalten keine Energie",
+      "Sie machen Bewegung unnötig"
+    ],
+    "explanation": "Die Ballaststoffe unterstützen die Verdauung und helfen, länger satt zu bleiben."
+  },
+  {
+    "id": "2-9",
+    "g": 2,
+    "topic": "Kohlenhydrate",
+    "question": "Was ist ein Vorteil von Kartoffeln gegenüber gezuckerter Cola?",
+    "correct": "Sie liefern zusätzliche wichtige Nährstoffe",
+    "choices": [
+      "Sie liefern grundsätzlich keine Energie",
+      "Sie enthalten mehr Koffein",
+      "Sie bestehen nur aus Zucker"
+    ],
+    "explanation": "Beide können Energie liefern. Kartoffeln liefern zusätzlich wichtige Nährstoffe; Cola macht kaum satt."
+  },
+  {
+    "id": "3-0",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Wie heißt Protein auch?",
+    "correct": "Eiweiß",
+    "choices": [
+      "Stärke",
+      "Ballaststoff",
+      "Mineralstoff"
+    ],
+    "explanation": "Protein ist ein anderes Wort für den Nährstoff Eiweiß."
+  },
+  {
+    "id": "3-1",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Welches Lebensmittel liefert pflanzliches Eiweiß?",
+    "correct": "Linsen",
+    "choices": [
+      "Fisch",
+      "Ei",
+      "Quark"
+    ],
+    "explanation": "Linsen und andere Hülsenfrüchte sind pflanzliche Eiweißquellen."
+  },
+  {
+    "id": "3-2",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Welches Lebensmittel liefert tierisches Eiweiß?",
+    "correct": "Milch",
+    "choices": [
+      "Erbsen",
+      "Soja",
+      "Nüsse"
+    ],
+    "explanation": "Milchprodukte, Eier, Fisch und Fleisch liefern tierisches Eiweiß."
+  },
+  {
+    "id": "3-3",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Wofür braucht der Körper Eiweiß?",
+    "correct": "Für Zellen und Muskeln",
+    "choices": [
+      "Nur zum Durstlöschen",
+      "Nur für die Farbe der Haut",
+      "Zum Herstellen von Koffein"
+    ],
+    "explanation": "Eiweiß ist ein Baustoff für Zellen und Muskeln."
+  },
+  {
+    "id": "3-4",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Was bildet der Körper mithilfe von Eiweiß für die Abwehr?",
+    "correct": "Antikörper",
+    "choices": [
+      "Zuckerzusatz",
+      "Ballaststoffe",
+      "Koffein"
+    ],
+    "explanation": "Antikörper helfen bei der Abwehr von Krankheitserregern."
+  },
+  {
+    "id": "3-5",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Wie heißen die Bausteine von Eiweiß?",
+    "correct": "Aminosäuren",
+    "choices": [
+      "Fettsäuren",
+      "Zuckerwürfel",
+      "Mineralstoffe"
+    ],
+    "explanation": "Eiweiß besteht aus kleinen Bausteinen: den Aminosäuren."
+  },
+  {
+    "id": "3-6",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Warum müssen wir bestimmte Aminosäuren essen?",
+    "correct": "Der Körper stellt sie nicht selbst her",
+    "choices": [
+      "Sie enthalten viel Koffein",
+      "Sie ersetzen das Wasser",
+      "Der Körper braucht nur diese Nahrung"
+    ],
+    "explanation": "Einige Aminosäuren kann unser Körper nicht selbst herstellen. Wir nehmen sie mit dem Essen auf."
+  },
+  {
+    "id": "3-7",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Warum passen Reis und Erbsen gut zusammen?",
+    "correct": "Ihre Eiweißbausteine ergänzen sich",
+    "choices": [
+      "Zusammen enthalten sie kein Eiweiß",
+      "Sie ersetzen alle Getränke",
+      "Sie liefern nur gesättigte Fette"
+    ],
+    "explanation": "Getreide und Hülsenfrüchte liefern unterschiedliche Eiweißbausteine und ergänzen sich gut."
+  },
+  {
+    "id": "3-8",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Welche Eiweißmenge wurde für 13- bis unter 15-Jährige als Orientierung behandelt?",
+    "correct": "0,9 g je kg Körpergewicht am Tag",
+    "choices": [
+      "9 g je kg Körpergewicht am Tag",
+      "0,9 g insgesamt am Tag",
+      "90 g je kg Körpergewicht am Tag"
+    ],
+    "explanation": "Die behandelte Orientierung beträgt täglich 0,9 Gramm Eiweiß pro Kilogramm Körpergewicht."
+  },
+  {
+    "id": "3-9",
+    "g": 3,
+    "topic": "Proteine",
+    "question": "Was stimmt über Proteinriegel und Shakes?",
+    "correct": "Sie sind bei abwechslungsreichem Essen meist unnötig",
+    "choices": [
+      "Alle Jugendlichen brauchen sie täglich",
+      "Sie machen ohne Weiteres stark",
+      "Sie ersetzen Obst und Gemüse vollständig"
+    ],
+    "explanation": "Abwechslungsreiches Essen reicht normalerweise aus. „High Protein“ macht ein Produkt nicht automatisch sinnvoll."
+  },
+  {
+    "id": "4-0",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Welche Aufgabe hat Fett im Körper?",
+    "correct": "Energie liefern und Zellen mit aufbauen",
+    "choices": [
+      "Nur Durst löschen",
+      "Alle Vitamine selbst herstellen",
+      "Die Verdauung vollständig ersetzen"
+    ],
+    "explanation": "Fett ist lebensnotwendig: Es liefert Energie, gehört zu Zellen und polstert als Körperfett Organe."
+  },
+  {
+    "id": "4-1",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Für welche Vitamine braucht der Körper Fett zur Aufnahme?",
+    "correct": "A, D, E und K",
+    "choices": [
+      "Nur Vitamin C",
+      "Nur Vitamin B",
+      "Für keine Vitamine"
+    ],
+    "explanation": "Die Vitamine A, D, E und K werden mithilfe von Fett aufgenommen."
+  },
+  {
+    "id": "4-2",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Welches Öl liefert viele ungesättigte Fettsäuren?",
+    "correct": "Rapsöl",
+    "choices": [
+      "Kokosfett",
+      "Butter",
+      "Sahne"
+    ],
+    "explanation": "Rapsöl und Olivenöl liefern viele ungesättigte Fettsäuren."
+  },
+  {
+    "id": "4-3",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Was zeigt der Vergleich von Lachs und Kokosfett?",
+    "correct": "Die Herkunft allein verrät die Fettart nicht",
+    "choices": [
+      "Pflanzliches Fett ist immer ungesättigt",
+      "Tierisches Fett ist immer gesättigt",
+      "Beide enthalten gar kein Fett"
+    ],
+    "explanation": "Lachs liefert viele ungesättigte, Kokosfett viele gesättigte Fettsäuren."
+  },
+  {
+    "id": "4-4",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Welche Veränderung ist meist günstiger für die Gesundheit?",
+    "correct": "Einen Teil gesättigter Fette durch ungesättigte ersetzen",
+    "choices": [
+      "Alle Fette vollständig weglassen",
+      "Nur noch Kokosfett verwenden",
+      "Ungesättigte Fette immer durch Butter ersetzen"
+    ],
+    "explanation": "Lebensmittel enthalten meist beide Fettarten. Ein Teil der gesättigten lässt sich günstig durch ungesättigte ersetzen."
+  },
+  {
+    "id": "4-5",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Was bedeuten 30–35 Prozent Fett als Orientierung?",
+    "correct": "Diesen Anteil der täglichen Energie",
+    "choices": [
+      "Ein Drittel des Tellers mit Öl füllen",
+      "Ein Drittel des Körpergewichts",
+      "30–35 Gramm bei jeder Mahlzeit"
+    ],
+    "explanation": "Für 13- bis unter 15-Jährige ist der Anteil an der täglichen Energie gemeint, nicht der Anteil auf dem Teller."
+  },
+  {
+    "id": "4-6",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Wie viel Energie liefert ein Gramm Fett ungefähr?",
+    "correct": "9 Kilokalorien",
+    "choices": [
+      "1 Kilokalorie",
+      "90 Kilokalorien",
+      "Keine Energie"
+    ],
+    "explanation": "Ein Gramm Fett liefert etwa neun Kilokalorien."
+  },
+  {
+    "id": "4-7",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Wo kann Fett versteckt sein?",
+    "correct": "In Wurst und Gebäck",
+    "choices": [
+      "Nur in sichtbarem Öl",
+      "Nur in frischem Wasser",
+      "Nur in Salz"
+    ],
+    "explanation": "Fett ist nicht immer sichtbar. Es steckt auch in Chips, Schokolade, Wurst und Gebäck."
+  },
+  {
+    "id": "4-8",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Auf der Packung steht: 20 g Fett, davon 3 g gesättigt. Wie viel Fett ist es insgesamt?",
+    "correct": "20 g",
+    "choices": [
+      "23 g",
+      "17 g",
+      "3 g"
+    ],
+    "explanation": "„Davon“ bedeutet: Die 3 Gramm gesättigten Fettsäuren sind in den 20 Gramm Fett schon enthalten."
+  },
+  {
+    "id": "4-9",
+    "g": 4,
+    "topic": "Fette und Öle",
+    "question": "Wie vergleichst du die Fettmenge zweier Produkte fair?",
+    "correct": "Beide Angaben je 100 g ansehen",
+    "choices": [
+      "Eine ganze Packung mit einem Bissen vergleichen",
+      "Nur die Farbe der Verpackung ansehen",
+      "Immer das größere Produkt wählen"
+    ],
+    "explanation": "Vergleiche dieselbe Menge, zum Beispiel die Angaben je 100 Gramm."
+  },
+  {
+    "id": "5-0",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Wofür liefert Zucker Energie?",
+    "correct": "Für Gehirn und Muskeln",
+    "choices": [
+      "Nur für Haare",
+      "Nur für Zähne",
+      "Für keinen Teil des Körpers"
+    ],
+    "explanation": "Zucker liefert Energie für unser Gehirn und unsere Muskeln."
+  },
+  {
+    "id": "5-1",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Was stimmt über Zucker in Obst?",
+    "correct": "Obst liefert auch Vitamine und Ballaststoffe",
+    "choices": [
+      "Obst besteht nur aus Zucker",
+      "Obst enthält nie Zucker",
+      "Obst ist deshalb dasselbe wie Limonade"
+    ],
+    "explanation": "Obst enthält Zucker, liefert aber auch wichtige Vitamine und Ballaststoffe."
+  },
+  {
+    "id": "5-2",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Was bedeutet Zuckerzusatz?",
+    "correct": "Dem Lebensmittel wurde Zucker hinzugefügt",
+    "choices": [
+      "Der natürliche Zucker wurde entfernt",
+      "Das Produkt enthält nur Stärke",
+      "Das Lebensmittel enthält keinen Zucker"
+    ],
+    "explanation": "Vielen Lebensmitteln wird Zucker zugesetzt. Zu viel davon ist nicht gesund."
+  },
+  {
+    "id": "5-3",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Was stimmt über Fruchtsaft?",
+    "correct": "Er kann viel Zucker enthalten",
+    "choices": [
+      "Er enthält grundsätzlich keinen Zucker",
+      "Er hat immer mehr Ballaststoffe als Obst",
+      "Er ersetzt jede Mahlzeit"
+    ],
+    "explanation": "Auch Fruchtsaft enthält viel Zucker. Ein ganzer Apfel ist die bessere Wahl."
+  },
+  {
+    "id": "5-4",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Du hast Durst. Warum ist Wasser günstiger als gezuckerte Limonade?",
+    "correct": "Es löscht den Durst ohne Zucker",
+    "choices": [
+      "Es enthält mehr Zucker",
+      "Limonade enthält gar keine Flüssigkeit",
+      "Wasser ersetzt alle Nährstoffe"
+    ],
+    "explanation": "Gezuckerte Limonade enthält viel Zucker und macht kaum satt. Wasser ist der bessere Durstlöscher."
+  },
+  {
+    "id": "5-5",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Was kann häufiges Naschen oder Trinken von Süßem fördern?",
+    "correct": "Löcher in den Zähnen",
+    "choices": [
+      "Stärkere Zähne durch Zucker",
+      "Mehr Ballaststoffe im Körper",
+      "Einen geringeren Energiegehalt"
+    ],
+    "explanation": "Häufig Zucker zu essen oder zu trinken, kann Karies fördern."
+  },
+  {
+    "id": "5-6",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Wann kann viel Zucker eine Gewichtszunahme begünstigen?",
+    "correct": "Bei dauerhaft mehr Energie als wir verbrauchen",
+    "choices": [
+      "Nach jedem einzelnen Bonbon sofort",
+      "Nur wenn wir gleichzeitig Wasser trinken",
+      "Auch wenn Zucker gar keine Energie liefert"
+    ],
+    "explanation": "Entscheidend ist, ob wir dauerhaft mehr Energie aufnehmen, als der Körper verbraucht."
+  },
+  {
+    "id": "5-7",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Was steht in der Nährwerttabelle unter „davon Zucker“?",
+    "correct": "Natürlicher und zugesetzter Zucker zusammen",
+    "choices": [
+      "Nur zugesetzter Zucker",
+      "Nur der Zucker aus Obst",
+      "Die gesamte Fettmenge"
+    ],
+    "explanation": "„Davon Zucker“ umfasst auch den Zucker, der von Natur aus im Lebensmittel steckt."
+  },
+  {
+    "id": "5-8",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Wie passen Süßigkeiten zu abwechslungsreichem Essen?",
+    "correct": "Ab und zu in kleinen Mengen",
+    "choices": [
+      "Als Ersatz für jede Mahlzeit",
+      "Nur noch Süßigkeiten essen",
+      "Jede Süßigkeit macht sofort krank"
+    ],
+    "explanation": "Süßigkeiten dürfen wir ab und zu in kleinen Mengen genießen."
+  },
+  {
+    "id": "5-9",
+    "g": 5,
+    "topic": "Zucker",
+    "question": "Produkt A hat 5 g, B hat 12 g Zucker je 100 g. Was stimmt?",
+    "correct": "A enthält bei gleicher Menge weniger Zucker",
+    "choices": [
+      "B enthält weniger Zucker",
+      "Beide enthalten gleich viel Zucker",
+      "A ist allein deshalb insgesamt gesünder"
+    ],
+    "explanation": "Bei gleicher Menge enthält A weniger Zucker. Für die gesamte Bewertung zählen auch andere Nährstoffe und die Gewohnheiten."
+  }
+];
+const SUBJECTS=[['+ −','Mathe'],['Aa','Deutsch'],['§','Gemeinschafts|kunde'],['⌛','Geschichte'],['◎','Geographie'],['⚗','BNT'],['✎','Kunst']];
+const $=id=>document.getElementById(id),canvas=$('road'),ctx=canvas.getContext('2d');
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let state='home',distance=0,fuel=0,stops=0,lane=1,busX=1,objects=[],nextRow=100,quiz=[],qi=0,answered=false,earned=0,lastTime=null,toastUntil=0;
+let seen=new Map(),wrong=new Set(),questionCounter=0,lastGroup=-1,lastQuestion=null;
+const recordKey='pausenexpress:'+QUESTION_SET.id+':'+QUESTION_SET.level;let best=0,storageOK=true;
+try{best=Number(localStorage.getItem(recordKey))||0}catch(e){storageOK=false}
+function hud(){ $('distance').textContent=Math.floor(distance)+' m';$('nextStop').textContent=Math.max(0,Math.ceil((stops+1)*CONFIG.stationDistance-distance))+' m';$('fuelText').textContent=Math.ceil(Math.max(0,fuel))+' / '+CONFIG.tankCapacity;$('bar').style.width=(fuel/CONFIG.tankCapacity*100)+'%';$('bar').style.background=fuel<=CONFIG.lowFuel?'#ffb86b':'#cfef75';$('low').textContent=fuel<=CONFIG.lowFuel&&state==='drive'?'Wenig Benzin!':'';$('pause').disabled=state!=='drive';$('left').disabled=$('right').disabled=state!=='drive'}
+function show(html){$('overlay').hidden=false;$('card').innerHTML=html;hud()}
+function button(text,fn){const b=document.createElement('button');b.className='primary';b.textContent=text;b.onclick=fn;$('card').append(b)}
+function home(){state='home';show('<div class="eyebrow">Dein Bus. Dein Wissen. Deine Strecke.</div><h1>Erst tanken.<br>Dann <span class="accent">durchstarten.</span></h1><p>Beantworte Fragen zu Essen und Trinken. Tanke mit deinem Wissen.</p><div class="steps"><div class="step"><b>01 / WISSEN</b>5 Fragen.<br>Richtig = +20 Benzin.</div><div class="step"><b>02 / FAHREN</b>Schilder meiden.<br>Ein Treffer = Ende.</div><div class="step"><b>03 / TANKEN</b>Alle 1800 Meter<br>wartet eine Tankstelle.</div></div><p>60 Fragen zu Ernährung · Rekord: <b>'+best+' m</b><br>3 richtige Antworten reichen bis zur nächsten Tankstelle.</p>');button('Fragen starten →',reset)}
+function reset(){distance=0;fuel=0;stops=0;lane=busX=1;objects=[];nextRow=100;lastTime=null;$('toast').textContent='';startQuiz()}
+function selectQuestions(){let batch=[];for(let i=0;i<CONFIG.questionsPerRound;i++){let candidates=QUESTIONS.filter(q=>!batch.includes(q)&&q.id!==lastQuestion&&(!seen.has(q.id)||questionCounter-seen.get(q.id)>=8));if(!candidates.length)candidates=QUESTIONS.filter(q=>!batch.includes(q));let unused=candidates.filter(q=>!batch.some(b=>b.g===q.g));if(unused.length)candidates=unused;let different=candidates.filter(q=>q.g!==lastGroup);if(different.length)candidates=different;const retry=candidates.filter(q=>wrong.has(q.id));if(retry.length&&i===0)candidates=retry;else{let fresh=candidates.filter(q=>!seen.has(q.id));if(fresh.length)candidates=fresh}let q=shuffle(candidates)[0];batch.push(q);seen.set(q.id,questionCounter++);lastGroup=q.g;lastQuestion=q.id}return batch}
+function startQuiz(){state='quiz';quiz=selectQuestions();qi=0;earned=0;renderQuestion()}
+function renderQuestion(){answered=false;const q=quiz[qi];show('<div class="quizhead"><span class="eyebrow">'+(stops?'Tankstelle '+stops:'Vor der Abfahrt')+' · Frage '+(qi+1)+' / '+quiz.length+'</span><span class="pill" id="quizFuel">'+Math.round(fuel)+' Benzin</span></div><p style="text-align:center">Ernährung · '+q.topic+'</p><div class="word">'+q.question+'</div><div class="answers" id="answers"></div><div class="feedback" id="feedback" role="status">Wähle eine Antwort. Du hast Zeit.</div>');shuffle([q.correct,...shuffle(q.choices).slice(0,3)]).forEach(a=>{let b=document.createElement('button');b.className='answer';b.textContent=a;b.onclick=()=>answer(a);$('answers').append(b)})}
+function answer(a){if(state!=='quiz'||answered)return;answered=true;const q=quiz[qi],correct=a===q.correct,before=fuel;if(correct){fuel=Math.min(CONFIG.tankCapacity,fuel+CONFIG.fuelReward);earned+=fuel-before;wrong.delete(q.id)}else wrong.add(q.id);Array.from($('answers').children).forEach(b=>{b.disabled=true;if(b.textContent===q.correct)b.classList.add('correct');else if(b.textContent===a)b.classList.add('wrong')});$('feedback').textContent=(correct?'Richtig! +'+Math.round(fuel-before)+' Benzin'+(fuel===CONFIG.tankCapacity?' · Tank voll.':'.'):'Noch nicht richtig. Richtig ist: '+q.correct+'.')+' '+q.explanation;$('quizFuel').textContent=Math.round(fuel)+' Benzin';hud();button('Weiter →',()=>{if(qi<quiz.length-1){qi++;renderQuestion()}else finishQuiz()})}
+function finishQuiz(){state='ready';if(fuel<=0){show('<div class="eyebrow">Noch einmal üben</div><h2>Dein Tank ist noch leer.</h2><p>Versuche es noch einmal! Jede richtige Antwort gibt Benzin.</p>');button('Neue Fragerunde →',startQuiz);return}show('<div class="eyebrow">'+(stops?'Tankstopp geschafft':'Bereit für die Straße')+'</div><h1>'+Math.round(fuel)+' <span class="accent">Benzin</span></h1><p>Du hast '+Math.round(earned)+' Benzin dazugewonnen.<br>Bis zur nächsten Tankstelle brauchst du 60 Benzin.</p><p>Weiche den Unterrichtsschildern aus. Sammle grüne Kanister.</p>');button(stops?'Weiterfahren →':'Losfahren →',drive)}
+function drive(){state='drive';$('overlay').hidden=true;lastTime=null;hud()}
+function pause(){if(state!=='drive')return;state='paused';lastTime=null;show('<div class="eyebrow">Zeit zum Durchatmen</div><h1>Pause.</h1><p>Dein Bus wartet. Strecke und Benzin bleiben stehen.</p>');button('Weiterfahren →',drive)}
+function end(reason){state='over';const score=Math.floor(distance);best=Math.max(best,score);try{localStorage.setItem(recordKey,String(best))}catch(e){storageOK=false}show('<div class="eyebrow">Dein Ergebnis · Insgesamt gefahren</div><h1 style="font-size:clamp(48px,7vw,80px)">'+score+' <span class="accent">Meter</span></h1><p><b>'+reason+'</b></p><div class="results"><div><strong>'+score+' m</strong><span>Gefahrene Strecke</span></div><div><strong>'+stops+'</strong><span>Tankstellen erreicht</span></div><div><strong>'+best+' m</strong><span>Dein Rekord</span></div></div><p>'+(storageOK?'Dein Rekord bleibt auf diesem Gerät.':'Speichern ist hier nicht möglich. Der Rekord gilt nur, solange die Seite offen ist.')+'</p>');button('Neuer Versuch →',reset)}
+function move(d){if(state==='drive')lane=Math.max(0,Math.min(2,lane+d))}
+function spawn(){while(nextRow<distance+CONFIG.lookAhead){let pos=nextRow;nextRow+=CONFIG.rowDistance;if(pos>=(stops+1)*CONFIG.stationDistance-65)continue;let safe=Math.floor(Math.random()*3);let blocked=shuffle([0,1,2].filter(l=>l!==safe)).slice(0,Math.random()<.05?1:2);blocked.forEach(l=>objects.push({at:pos,lane:l,type:'sign',subject:SUBJECTS[Math.floor(Math.random()*SUBJECTS.length)]}));if(Math.random()<CONFIG.canisterChance)objects.push({at:pos,lane:safe,type:'fuel'})}}
+// Distance-based simulation: exactly 60 units per section, independent of speed.
+function step(dt){if(state!=='drive')return;dt=Math.min(dt,.04);const speed=Math.min(CONFIG.maxSpeed,CONFIG.startSpeed+distance*CONFIG.speedGainPerMeter);let boundary=(stops+1)*CONFIG.stationDistance;let travel=Math.min(speed*dt,boundary-distance,fuel/CONFIG.fuelPerMeter);let old=distance;distance+=travel;fuel=Math.max(0,fuel-travel*CONFIG.fuelPerMeter);busX+=Math.sign(lane-busX)*Math.min(Math.abs(lane-busX),dt/CONFIG.laneChangeSeconds);spawn();for(const o of objects){if(o.used)continue;let overlap=o.at>=old-9&&o.at<=distance+9;if(overlap&&Math.abs(busX-o.lane)<(o.type==='sign'?.53:.57)){o.used=true;if(o.type==='sign'){end('Schild erwischt!');return}else{fuel=Math.min(CONFIG.tankCapacity,fuel+CONFIG.canisterFuel);$('toast').textContent='+10 Benzin';toastUntil=distance+45}}}objects=objects.filter(o=>!o.used&&o.at>distance-20);if(distance>=boundary-1e-7){distance=boundary;stops++;objects=[];nextRow=distance+100;startQuiz();return}if(fuel<=1e-8){fuel=0;end('Tank leer!');return}if(distance>toastUntil)$('toast').textContent='';hud()}
+function rect(x,y,w,h,r,color){ctx.fillStyle=color;ctx.beginPath();ctx.roundRect(x,y,w,h,r);ctx.fill()}
+function draw(){const w=canvas.clientWidth,h=canvas.clientHeight,dpr=Math.min(devicePixelRatio||1,2);if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr)}ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle='#a8c49b';ctx.fillRect(0,0,w,h);const roadW=Math.min(w*.62,650),left=(w-roadW)/2,lw=roadW/3,by=h*.79,scale=by/CONFIG.lookAhead;
+// Original vector scenery: little gardens, trees and school buildings.
+for(let i=0;i<7;i++){let y=((i*123+distance*scale*.6)%(h+180))-90;for(let side of [-1,1]){let x=w/2+side*(roadW/2+45+(i%2)*38);rect(x-5,y,10,34,3,'#69886b');ctx.fillStyle=i%2?'#799e75':'#89ac79';ctx.beginPath();ctx.arc(x,y,24,0,7);ctx.fill()}}
+rect(left-13,0,roadW+26,h,0,'#dde0be');rect(left,0,roadW,h,0,'#4b6262');ctx.setLineDash([22,24]);ctx.lineDashOffset=-distance*scale;ctx.strokeStyle='#b4c5b7';ctx.lineWidth=3;for(let i=1;i<3;i++){ctx.beginPath();ctx.moveTo(left+lw*i,0);ctx.lineTo(left+lw*i,h);ctx.stroke()}ctx.setLineDash([]);
+let stationY=by-((stops+1)*CONFIG.stationDistance-distance)*scale;if(stationY>-60&&stationY<h){rect(left,stationY-24,roadW,46,0,'#cfef75');ctx.fillStyle='#294637';ctx.font='bold 16px Arial';ctx.textAlign='center';ctx.fillText('TANKSTELLE · AUTOMATISCHER STOPP',w/2,stationY+5)}
+for(const o of objects){if(o.used)continue;let y=by-(o.at-distance)*scale,x=left+lw*(o.lane+.5);if(y<-60||y>h+70)continue;if(o.type==='fuel'){rect(x-18,y-24,36,46,7,'#d1ee78');rect(x-6,y-31,17,10,3,'#294e3e');ctx.fillStyle='#31543f';ctx.font='bold 24px Arial';ctx.textAlign='center';ctx.fillText('+',x,y+8)}else{let sw=Math.min(lw*.86,164),sh=64;rect(x-sw/2+3,y-sh/2+5,sw,sh,9,'#263f3d55');rect(x-sw/2,y-sh/2,sw,sh,9,'#f5e3bd');rect(x-sw/2+4,y-sh/2+4,sw-8,sh-8,6,'#f9f3e2');ctx.fillStyle='#a6563c';ctx.textAlign='center';ctx.font='bold 20px Arial';ctx.fillText(o.subject[0],x,y-8);ctx.fillStyle='#344c47';let lines=o.subject[1].split('|');ctx.font='bold '+Math.max(10,Math.min(14,sw/11))+'px Arial';lines.forEach((s,i)=>ctx.fillText(s,x,y+12+i*14))}}
+let bx=left+lw*(busX+.5),bw=Math.min(64,lw*.48),bh=Math.min(98,h*.23);rect(bx-bw/2+5,by-bh/2+7,bw,bh,13,'#203a3966');rect(bx-bw/2-5,by-bh*.3,9,23,3,'#20383b');rect(bx+bw/2-4,by-bh*.3,9,23,3,'#20383b');rect(bx-bw/2,by-bh/2,bw,bh,12,'#f2c75b');rect(bx-bw*.38,by-bh*.34,bw*.76,bh*.22,5,'#2d555a');rect(bx-bw*.38,by+bh*.24,bw*.76,bh*.12,4,'#567875');rect(bx-bw*.29,by-bh*.02,bw*.58,bh*.19,4,'#ffe599');ctx.textAlign='center';ctx.fillStyle='#6b592b';ctx.font='bold 10px Arial';ctx.fillText('PAUSE',bx,by+bh*.12);rect(bx-bw*.36,by-bh*.48,10,4,2,'#fff8c2');rect(bx+bw*.21,by-bh*.48,10,4,2,'#fff8c2');}
+function frame(t){if(lastTime!==null&&state==='drive')step((t-lastTime)/1000);lastTime=state==='drive'?t:null;draw();requestAnimationFrame(frame)}
+$('left').addEventListener('pointerdown',e=>{e.preventDefault();move(-1)});$('right').addEventListener('pointerdown',e=>{e.preventDefault();move(1)});$('left').addEventListener('click',e=>{if(e.detail===0)move(-1)});$('right').addEventListener('click',e=>{if(e.detail===0)move(1)});$('pause').onclick=pause;
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){if(state==='drive'){e.preventDefault();if(!e.repeat)move(e.key==='ArrowLeft'?-1:1)}}if(e.key==='Escape')pause()});document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});window.addEventListener('blur',pause);window.addEventListener('pagehide',pause);home();requestAnimationFrame(frame);
+</script></body></html>
